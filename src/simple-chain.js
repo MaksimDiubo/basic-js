@@ -2,29 +2,34 @@ const chainMaker = {
   chain: [],
 
   getLength() {
-    return this.chain.length
+    return this.chain.length;
   },
   addLink(value) {
-    if (value !== undefined) {
-      this.chain.push(`~~( ${value} )`)
+
+    if (value === undefined) {
+      this.chain.push(`( )`);
     } else {
-      this.chain.push("( )")
+      this.chain.push(`( ${value} )~~`);
     }
     return this
   },
   removeLink(position) {
-    if (!Number.isInteger(position) || position < 0 || position >= this.chain.length) {
-      throw "Error"
+    if (!Number.isInteger(position) || position <= 0 || position >= this.getLength()) {
+      this.chain = [];
+      throw 'error';
+    } else {
+      this.chain.splice(position - 1, 1);
     }
-    this.chain.splice(position - 1, 1)
-    return this
+    return this;
   },
   reverseChain() {
-    this.chain.reverse()
-    return this
+    this.chain.reverse();
+    return this;
   },
   finishChain() {
-  return this.chain.join("").slice(2)
+  let result = this.chain.join('').slice(0, -2);
+  this.chain = [];
+  return result;
   }
 };
 
